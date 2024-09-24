@@ -1,40 +1,73 @@
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+
 public class FizzyPrinter {
     private boolean uppercase;
+
 
     public FizzyPrinter(boolean uppercase) {
         this.uppercase = uppercase;
     }
 
+
     public String printFizzy(int n) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         if (n % 3 == 0) {
-            result += "Fizz";
+            result.append("Fizz");
         }
         if (n % 5 == 0) {
-            result += "Buzz";
+            result.append("Buzz");
         }
         if (n % 7 == 0) {
-            result += "Bang";
+            result.append("Bang");
         }
         
-        if (result.equals("")) {
-            result = "Boom";
+        if (result.length() == 0) {
+            result.append("Boom");
         }
         
         if (uppercase) {
-            result = result.toUpperCase();
+            return result.toString().toUpperCase();
         }
 
-        return result;
+        return result.toString();
+    }
+}
+
+
+
+
+public class FizzyPrinterTest {
+
+    @Test
+    public void testFizz() {
+        FizzyPrinter printer = new FizzyPrinter(false);
+        assertEquals("Fizz", printer.printFizzy(3));
     }
 
-
-
-    public static void main(String[] args) {
+    @Test
+    public void testBuzz() {
         FizzyPrinter printer = new FizzyPrinter(false);
-        System.out.println(printer.printFizzy(3));   // Fizz
-        System.out.println(printer.printFizzy(5));   // Buzz
-        System.out.println(printer.printFizzy(105)); // FizzBuzzBang
+        assertEquals("Buzz", printer.printFizzy(5));
+    }
+
+    @Test
+    public void testFizzBuzzBang() {
+        FizzyPrinter printer = new FizzyPrinter(false);
+        assertEquals("FizzBuzzBang", printer.printFizzy(105));
+    }
+
+    @Test
+    public void testBoom() {
+        FizzyPrinter printer = new FizzyPrinter(false);
+        assertEquals("Boom", printer.printFizzy(8));
+    }
+
+    @Test
+    public void testUpperCase() {
+        FizzyPrinter printer = new FizzyPrinter(true);
+        assertEquals("FIZZBUZZBANG", printer.printFizzy(105));
     }
 }

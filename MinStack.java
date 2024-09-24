@@ -1,8 +1,13 @@
 import java.util.Stack;
 
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+
 public class MinStack {
     private Stack<Integer> stack;
     private Stack<Integer> minStack;
+
 
     public MinStack() {
         stack = new Stack<>();
@@ -10,21 +15,23 @@ public class MinStack {
     }
 
     // Push 
-    public void push(int value) {
-        stack.push(value);
-        if (minStack.isEmpty() || value <= minStack.peek()) {
-            minStack.push(value);
+    public void push(int x) {
+        stack.push(x);
+        if (minStack.isEmpty() || x <= minStack.peek()) {
+            minStack.push(x);
         }
     }
 
     // Pop 
-    public void pop() {
+    public int pop() {
         if (!stack.isEmpty()) {
-            if (stack.peek().equals(minStack.peek())) {
+            int removed = stack.pop();
+            if (removed == minStack.peek()) {
                 minStack.pop();
             }
-            stack.pop();
+            return removed;
         }
+        return -1;  
     }
 
     // Min 
@@ -32,17 +39,43 @@ public class MinStack {
         if (!minStack.isEmpty()) {
             return minStack.peek();
         }
-        return -1; 
+        return -1;  
+    }
+}
+
+
+
+
+public class MinStackTest {
+
+    @Test
+    public void testPushAndMin() {
+        MinStack stack = new MinStack();
+        stack.push(3);
+        stack.push(2);
+        stack.push(5);
+        stack.push(1);
+        assertEquals(1, stack.min());
     }
 
-    public static void main(String[] args) {
-        MinStack myStack = new MinStack();
-        myStack.push(3);
-        myStack.push(2);
-        myStack.push(5);
-        myStack.push(1);
-        System.out.println(myStack.min());  // 1
-        myStack.pop();
-        System.out.println(myStack.min());  // 2
+    @Test
+    public void testPopAndMin() {
+        MinStack stack = new MinStack();
+        stack.push(3);
+        stack.push(2);
+        stack.push(5);
+        stack.push(1);
+        stack.pop();
+        assertEquals(2, stack.min());
+    }
+
+    @Test
+    public void testPushSequence() {
+        MinStack stack = new MinStack();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+        assertEquals(1, stack.min());
     }
 }
